@@ -104,10 +104,11 @@ for i, centroid in enumerate(centroids):
             data_set.append(X[j])
     my_centroids.append(Centroid(centroid=centroid, data_set=data_set))
 
-for my_centroid in my_centroids:
-    for data_point in X:
-        print(my_centroid.score(data_point))
-
+for data_point in X:
+    scores = []
+    for my_centroid in my_centroids:
+        scores.append(my_centroid.score(data_point))
+    print(min(scores))
 
 plt.scatter(centroids, np.zeros_like(centroids), marker='*', s=200, c='y')
 
