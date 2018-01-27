@@ -8,9 +8,9 @@ plt.style.use('ggplot')
 
 # Importing the dataset
 data = pd.read_csv('xclara.csv')
-print("Input Data and Shape")
-print(data.shape)
-data.head()
+# print("Input Data and Shape")
+# print(data.shape)
+# data.head()
 
 plt.interactive(False)
 
@@ -90,27 +90,41 @@ kmeans = KMeans(n_clusters)
 kmeans = kmeans.fit(X)
 # Getting the cluster labels
 labels = kmeans.predict(X)
-# Centroid values
-centroids = kmeans.cluster_centers_
-
-print(centroids)
-
+# Getting each data point score
+scores = []
+# Centers values
+centers = kmeans.cluster_centers_
+# Centroids in the same order as centers
 my_centroids: [Centroid] = []
 
-for i, centroid in enumerate(centroids):
-    data_set = []
-    for j, label in enumerate(labels):
-        if label == i:
-            data_set.append(X[j])
-    my_centroids.append(Centroid(centroid=centroid, data_set=data_set))
+# Associate each data point to its closest centroid
+for i, center in enumerate(centers):
+    centroid = Centroid(center)
+    data_set = (X[j] for j in range(len(X)) if labels[j] == i)
+    centroid.initialize(data_set)
+    my_centroids.append(centroid)
 
-for data_point in X:
-    scores = []
-    for my_centroid in my_centroids:
-        scores.append(my_centroid.score(data_point))
-    print(min(scores))
+# Associate each data point with its score
+for i, data_point in enumerate(X):
+    label = labels[i]
+    center = my_centroids[label]
+    score = center.score(data_point)
+    scores.append(score)
 
-plt.scatter(centroids, np.zeros_like(centroids), marker='*', s=200, c='y')
+
+colors = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6']
+
+# plot each cluster with its unique color
+fig, ax = plt.subplots()
+for i in range(n_clusters):
+        points = np.array([X[j] for j in range(len(X)) if labels[j] == i])
+        ax.scatter(points[:, 0], np.zeros_like(points), s=7, c=colors[i])
+
+# plot anomalies in red
+anomalies = np.array([X[i] for i in range(len(X)) if scores[i] > 3])
+ax.scatter(anomalies[:, 0], np.zeros_like(anomalies), marker='v', s=10, c='r')
+
+plt.scatter(centers, np.zeros_like(centers), marker='*', s=200, c='black')
 
 plt.show()
 
@@ -118,5 +132,4 @@ plt.show()
 # print("Centroid values")
 # print("Scratch")
 # print(C) # From Scratch
-print("sklearn")
-print(centroids) # From sci-kit learn
+# print(centers) # From sci-kit learn
