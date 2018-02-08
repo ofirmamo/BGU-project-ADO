@@ -23,7 +23,7 @@ class Centroid:
             self.stdev = stdev(total_distance)
             self.initialized = True
         else:
-            logging.warning('Centroid already initialized')
+            logging.warning(msg='Centroid already initialized')
 
     def score(self, data_point):
         if self.initialized:
@@ -31,5 +31,5 @@ class Centroid:
             distance_from_median = abs(distance_from_centroid - self.median)
             return distance_from_median / self.stdev
         else:
-            logging.warning('Model not yet initialized')
+            logging.warning(msg='Centroid not yet initialized')
             return None

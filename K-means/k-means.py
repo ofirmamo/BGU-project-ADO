@@ -82,7 +82,7 @@ scikit-learn
 from sklearn.cluster import KMeans
 
 # Number of clusters
-n_clusters = 3
+n_clusters = 5
 
 kmeans = KMeans(n_clusters)
 

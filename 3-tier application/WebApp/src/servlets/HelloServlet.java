@@ -26,7 +26,7 @@ public class HelloServlet extends HttpServlet {
      */
     public HelloServlet() {
         super();
-        logger = LoggerInstance.getInstance();
+        logger = servlets.LoggerInstance.getInstance();
         con = new DBmanager();
     }
 
@@ -37,7 +37,7 @@ public class HelloServlet extends HttpServlet {
 		// time variable - will count the time for each transaction.
 		int time;
 		response.getWriter().write("Hello, world!");
-		logger.info("Verb:"+request.getMethod()+ " time: " + 5);
+		logger.info("\"Verb\":" + request.getMethod() + " \"time\": " + 5);
 		/* TODO-
 		 *  1. adding DB instance that will connect to database, will perfom transaction and 
 		 *  	return the time.
