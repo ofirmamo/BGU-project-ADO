@@ -1,12 +1,12 @@
 
-Isquid:S1989"(Add a "try/catch" block for "getWriter".(Ëü«áüÿÿÿÿ8µ¥¶­—,
 <squid:S1068"'Remove this unused "con" private field.(£´±î
-Vsquid:S1161":Add the "@Override" annotation above this method signature(‹¨¯¿8µ¥¶­—,
+Bsquid:S1989"(Add a "try/catch" block for "getWriter".(Ëü«áüÿÿÿÿ
+>squid:S1989"$Add a "try/catch" block for "doGet".(®Ó‘ûÿÿÿÿÿ
+>squid:S1989"$Add a "try/catch" block for "doGet".(®Ó‘ûÿÿÿÿÿ
+rsquid:S2226"XRemove this misleading mutable servlet instance field or make it "static" and/or "final"(ø¢Á®øÿÿÿÿ
+msquid:S2226"XRemove this misleading mutable servlet instance field or make it "static" and/or "final"(£´±î
 Lsquid:S1135"2Complete the task associated to this TODO comment.(‘ÓœÎûÿÿÿÿ
-Rsquid:UselessImportCheck"0Remove this unused import 'java.sql.Connection'.(¥ËôÖ
 >squid:S1481")Remove this unused "time" local variable.(êõ„
-[squid:S1161":Add the "@Override" annotation above this method signature(Ïû©Öûÿÿÿÿ8µ¥¶­—,
-Esquid:S1989"$Add a "try/catch" block for "doGet".(®Ó‘ûÿÿÿÿÿ8µ¥¶­—,
-Esquid:S1989"$Add a "try/catch" block for "doGet".(®Ó‘ûÿÿÿÿÿ8µ¥¶­—,
-ysquid:S2226"XRemove this misleading mutable servlet instance field or make it "static" and/or "final"(ø¢Á®øÿÿÿÿ8µ¥¶­—,
-tsquid:S2226"XRemove this misleading mutable servlet instance field or make it "static" and/or "final"(£´±î8µ¥¶­—,
+Rsquid:UselessImportCheck"0Remove this unused import 'java.sql.Connection'.(¥ËôÖ
+Tsquid:S1161":Add the "@Override" annotation above this method signature(Ïû©Öûÿÿÿÿ
+Osquid:S1161":Add the "@Override" annotation above this method signature(‹¨¯¿
