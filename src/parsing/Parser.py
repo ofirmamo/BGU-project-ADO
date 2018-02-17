@@ -1,4 +1,5 @@
 import json
+import logging
 
 
 class Parser:
@@ -19,3 +20,11 @@ class Parser:
                 log = json.loads(line)
                 total_times.append(log['time'])
         return total_times
+
+
+# dictionary: dict = {'hi': 50, 'bye': 60}
+#
+# logger = logging.getLogger()
+#
+# logHandler = logging.StreamHandler()
+# logHandler.setFormatter()

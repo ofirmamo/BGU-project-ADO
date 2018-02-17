@@ -28,6 +28,7 @@ class Centroid:
     def score(self, data_point):
         if self.initialized:
             distance_from_centroid = distance.euclidean(data_point, self.centroid)
+
             distance_from_median = abs(distance_from_centroid - self.median)
             return distance_from_median / self.stdev
         else:
