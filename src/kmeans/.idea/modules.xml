@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BGU-project-ADO.iml" filepath="$PROJECT_DIR$/.idea/BGU-project-ADO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/K-means.iml" filepath="$PROJECT_DIR$/.idea/K-means.iml" />
     </modules>
   </component>
 </project>

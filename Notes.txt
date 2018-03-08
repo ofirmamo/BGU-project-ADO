@@ -1,0 +1,36 @@
+Some Notes for the project
+
+1. In order to actually see the plots in windows we have to use plt.show().
+2. K is configurable (Maybe later we'll add a configuration for the project).
+3. Currently loading data (via pandas) from a basic csv file (later we'll have to parse logs).
+4. The algorithm in retrospect - to filter an already existing log files.
+5. kmeans-sklearn.py isn't super relevant right now.
+   it generate x random clusters and show 3d implantation of k-means.
+6. Actually when we'll run the script we won't make any plots.
+   we'll just do the calculations and save the centroids(centers).
+
+
+How to run?
+
+1. Install packages 2 ways:
+ - pip install -r requirements.txt
+ - auto import via pycharm
+
+2. Enable sciview
+3. Run k-means.py
+
+
+FLASK:
+how to run flask via command line prompt:
+
+1. python -m venv venv (creating virtual enivorment)
+2. venv\Scripts\activate (activate the virtual enivorment)
+3. pip install -r requirements.txt (install requirements via the file "requirements.txt")
+4. set FLASK_APP=microblog.py ( Python script at the top-level that defines the Flask application instance )
+5. flask db init (initialize the data base.)
+6. flask db migrate -m "first"
+7. flask db upgrade
+8. flask run
+
+CLIENTS:
+Run: Clients.py :) (will run 100 request (from each) of: get post and delete)

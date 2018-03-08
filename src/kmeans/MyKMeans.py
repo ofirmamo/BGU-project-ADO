@@ -3,7 +3,7 @@ from typing import List
 from sklearn.cluster import KMeans
 import numpy as np
 
-from MyCentroid import Centroid
+from kmeans.MyCentroid import Centroid
 
 
 class MyKMeans:

@@ -1,8 +1,6 @@
-
 import requests
 import threading
 import Client
-import time
 
 
 def main():
@@ -13,10 +11,9 @@ def main():
     t2 = threading.Thread(target=client.post_request(address, 'b'))
     t3 = threading.Thread(target=client.delete_request(address, 'b'))
 
-    t2.start()
-    time.sleep(10)
     t1.start()
-    # t3.start()
+    t2.start()
+    t3.start()
 
 
 if __name__ == "__main__":
