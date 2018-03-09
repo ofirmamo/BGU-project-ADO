@@ -1,0 +1,13 @@
+2018-03-09 23:18:00,634 - app.logger - INFO - transaction time: 25
+2018-03-09 23:18:00,647 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,658 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,666 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,675 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,684 - app.logger - INFO - transaction time: 3
+2018-03-09 23:18:00,694 - app.logger - INFO - transaction time: 3
+2018-03-09 23:18:00,703 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,712 - app.logger - INFO - transaction time: 2
+2018-03-09 23:18:00,723 - app.logger - INFO - initializing model
+2018-03-09 23:18:00,729 - app.logger - INFO - transaction time: 3
+2018-03-09 23:18:00,754 - app.logger - INFO - Initialized and is not an anomaly
+2018-03-09 23:18:00,891 - app.logger - INFO - Initialized and is not an anomaly

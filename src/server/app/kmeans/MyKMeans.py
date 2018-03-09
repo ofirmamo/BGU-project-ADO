@@ -3,7 +3,7 @@ from typing import List
 from sklearn.cluster import KMeans
 import numpy as np
 
-from kmeans.MyCentroid import Centroid
+from .MyCentroid import Centroid
 
 
 class MyKMeans:
@@ -30,5 +30,3 @@ class MyKMeans:
 
     def is_anomaly(self, dot: int):
         return self.z_score(dot) > self.threshold
-
-
