@@ -5,11 +5,12 @@ class Client:
 
     def client_requests(self, address ,init_user: str='defult', tail: str='a', num_messages: int =100):
         current_user = init_user
-        for i in range (num_messages):
-            requests.get("{}/get".format(address), params = {'username':'ADO'})
+        for i in range (num_messages):  
             mail = current_user + '@ado.com'
-            requests.post("{}/post".format(address), data={'username': 'current_user', 'email': mail})
-            requests.delete("{}/delete".format(address), data={'username': current_user})
+           
+            requests.post("{}/post".format(address), params = {'username': current_user, 'email': mail})
+            requests.get("{}/get".format(address), params = {'username': current_user})
+            requests.delete("{}/delete".format(address), params={'username': current_user})
             current_user = current_user + tail
 
     '''
