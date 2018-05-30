@@ -5,3 +5,14 @@
 *.pyc
 *.pyc
 *.iml
+*.iml
+*.iml
+*.iml
+.idea/BGU-project-ADO.iml
+*.xml
+*.pyc
+.idea/BGU-project-ADO.iml
+
+\.idea/
+
+*.db

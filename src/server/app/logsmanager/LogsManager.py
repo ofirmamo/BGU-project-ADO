@@ -6,7 +6,7 @@ from app.logger import logger
 
 class LogsManager:
 
-    def __init__(self, configuration='../../resources/configuration.yml'):
+    def __init__(self, configuration: str = '../../resources/configuration.yml', verbose: bool = False):
         with open(configuration, 'r') as config_file:
             config = yaml.load(config_file)
             self.n_logs_to_init = config['n_logs_to_init']
@@ -16,6 +16,7 @@ class LogsManager:
         self.data_set = []
         self.initialized = False
         self.kmeans: MyKMeans = None
+        self.verbose = verbose
 
     def manage(self, value: int) -> bool:
         if self.initialized:
