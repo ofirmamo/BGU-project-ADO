@@ -28,8 +28,8 @@ def get_from_table():
     start_time = int(round(time.time() * 1000))
     u = User.query.filter_by(username=request.args.get('username')).first()
     total_time = int(round(time.time() * 1000)) - start_time
-    if log_manager.manage(total_time):
-        logger.info('transaction time: ' + str(total_time))
+    # if log_manager.manage(total_time):
+    logger.info('transaction time: ' + str(total_time))
     return str('username: ' + u.username + ' email: ' + u.email)
 
 
@@ -40,8 +40,8 @@ def add_to_table():
     db.session.add(u)
     db.session.commit()
     total_time = int(round(time.time() * 1000)) - start_time
-    if log_manager.manage(total_time):
-        logger.info('transaction time: ' + str(total_time))
+    # if log_manager.manage(total_time):
+    logger.info('transaction time: ' + str(total_time))
     return 'hello'
 
 
@@ -52,6 +52,6 @@ def delete_from_table():
     db.session.delete(user)
     db.session.commit()
     total_time = int(round(time.time() * 1000)) - start_time
-    if log_manager.manage(total_time):
-        logger.info('transaction time: ' + str(total_time))
+    # if log_manager.manage(total_time):
+    logger.info('transaction time: ' + str(total_time))
     return 'hello'
