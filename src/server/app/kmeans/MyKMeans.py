@@ -7,7 +7,6 @@ from matplotlib import pyplot as plt
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib.dates import DateFormatter
 from io import BytesIO
 
 from .MyCentroid import Centroid
@@ -54,9 +53,9 @@ class MyKMeans:
         ax = fig.add_subplot(111)
         for i in range(len(self.centers)):
             points = np.array([X[j] for j in range(len(X)) if self.labels[j] == i])
-            ax.scatter(points[:, 0], np.zeros_like(points), s=7, c=colors[i])
+            ax.scatter(points[:, 0], np.zeros_like(points), s=10, c=colors[i], marker='*')
         ax.scatter(self.anomalies[:], np.zeros_like(self.anomalies), marker='v', s=10, c='r')
-        plt.scatter(self.centers, np.zeros_like(self.centers), marker='*', s=200, c='black')
+        ax.scatter(self.centers, np.zeros_like(self.centers), marker='*', s=50, c='black')
 
         canvas = FigureCanvas(fig)
         png_output = BytesIO()

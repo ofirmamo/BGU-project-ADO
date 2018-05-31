@@ -17,3 +17,5 @@
 
 *.db
 venv/
+
+src/server/migrations/

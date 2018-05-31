@@ -7,7 +7,8 @@ from app.logger import logger, log_manager
 import time
 
 
-@app.route('/k-means.png')
+
+@app.route('/k-means')
 def display():
     return log_manager.display()
 

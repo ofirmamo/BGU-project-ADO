@@ -9,7 +9,7 @@ def main():
 
     for i in range(5):
         init_user = 'user' + str(i)
-        th = threading.Thread(target=client.client_requests(address, init_user, str(i), 50))
+        th = threading.Thread(target=client.client_requests(address, init_user, str(i), 400))
         th.start()
 
 

@@ -1,5 +1,5 @@
 from scipy.spatial import distance
-from statistics import median, stdev
+from statistics import mean, stdev
 import logging
 
 
@@ -8,7 +8,7 @@ class Centroid:
     def __init__(self, centroid, data_set=None):
         self.centroid = centroid
         self.initialized = False
-        self.median = None
+        self.mean = None
         self.stdev = None
         if data_set is not None:
             self.initialize(data_set)
@@ -19,8 +19,9 @@ class Centroid:
             for data_point in data_set:
                 total_distance.append(distance.euclidean(self.centroid, data_point))
 
-            self.median = median(total_distance)
-            self.stdev = stdev(total_distance, self.median)
+            self.mean = mean(total_distance)
+            self.stdev = stdev(total_distance, self.mean)
+            logging.info('mean ={}, stdev = {}', self.mean, self.stdev)
             self.initialized = True
         else:
             logging.warning(msg='Centroid already initialized')
@@ -29,8 +30,8 @@ class Centroid:
         if self.initialized:
             distance_from_centroid = distance.euclidean(data_point, self.centroid)
 
-            distance_from_median = abs(distance_from_centroid - self.median)
-            return distance_from_median / self.stdev
+            distance_from_mean = abs(distance_from_centroid - self.mean)
+            return distance_from_mean / self.stdev
         else:
             logging.warning(msg='Centroid not yet initialized')
             return None
