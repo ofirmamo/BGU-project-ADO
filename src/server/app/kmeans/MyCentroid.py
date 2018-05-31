@@ -20,7 +20,7 @@ class Centroid:
                 total_distance.append(distance.euclidean(self.centroid, data_point))
 
             self.median = median(total_distance)
-            self.stdev = stdev(total_distance)
+            self.stdev = stdev(total_distance, self.median)
             self.initialized = True
         else:
             logging.warning(msg='Centroid already initialized')

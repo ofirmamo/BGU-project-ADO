@@ -41,3 +41,6 @@ class LogsManager(logging.Filter):
 
         except ValueError as e:
             return False
+
+    def display(self):
+        return self.kmeans.display()

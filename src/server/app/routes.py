@@ -3,8 +3,13 @@ from app import app, log_manager
 from .forms import LoginForm
 from app.models import User
 from app import db
-from app.logger import logger
+from app.logger import logger, log_manager
 import time
+
+
+@app.route('/k-means.png')
+def display():
+    return log_manager.display()
 
 
 @app.route('/')
