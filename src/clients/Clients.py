@@ -7,7 +7,7 @@ def main():
 
     client = Client.Client()
 
-    for i in range(5):
+    for i in range(3):
         init_user = 'user' + str(i)
         th = threading.Thread(target=client.client_requests(address, init_user, str(i), 400))
         th.start()

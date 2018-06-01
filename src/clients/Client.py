@@ -8,9 +8,9 @@ class Client:
         for i in range (num_messages):  
             mail = current_user + '@ado.com'
            
-            requests.post("{}/post".format(address), params = {'username': current_user, 'email': mail})
-            requests.get("{}/get".format(address), params = {'username': current_user})
-            requests.delete("{}/delete".format(address), params={'username': current_user})
+            requests.post("{}/post-user".format(address), params = {'username': current_user, 'email': mail})
+            requests.get("{}/get-user".format(address), params = {'username': current_user})
+            requests.delete("{}/delete-user".format(address), params={'username': current_user})
             current_user = current_user + tail
 
     '''
