@@ -29,7 +29,7 @@ class LogsManager(logging.Filter):
             if self.initialized:
                 ans = self.kmeans.is_anomaly(value)
                 if ans:
-                    record.msg = '{} - k-means says it an anomaly'.format(record.msg)
+                    record.msg = '{} - k-means says it anomaly'.format(record.msg)
                 return ans
             else:
                 self.data_set.append(value)
