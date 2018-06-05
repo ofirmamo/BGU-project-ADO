@@ -96,23 +96,25 @@ def delete_from_table():
     db.session.commit()
     return log('Deleted From Table..', start_time)
 
-@app.route('/get-post')
+@app.route('/get-post', methods=['GET'])
 def get_post():
     start_time = int(round(time.time() * 1000))
     user = request.args.get('username')
-    if user == None:
+    username = User.query.filter_by(username=user).first()
+
+    if username == None:
         return log('Not Found', start_time)
 
     post = user.posts.first()
     return log(post.body, start_time)
 
 
-@app.route('/post-post')
+@app.route('/post-post', methods=['POST'])
 def post_post():
     start_time = int(round(time.time() * 1000))
     username = request.args.get('username')
     body = request.args.get('body')
-    user = User.query.filter_by(username).first()
+    user = User.query.filter_by(username=username).first()
 
     if user == None:
         return log('Not Found', start_time)
@@ -122,11 +124,11 @@ def post_post():
     db.session.commit()
     return log('Done', start_time)
 
-@app.route('/delete-post')
+@app.route('/delete-post', methods=['DELETE'])
 def delete_post():
     start_time = int(round(time.time() * 1000))
     username = request.args.get('username')
-    user = User.query.filter_by(username)
+    user = User.query.filter_by(username=username).first()
 
     if user == None:
         return log('User Not Found', start_time)
@@ -145,13 +147,13 @@ def parseInfoArgs(request):
     age = request.args.get('age')
     return {address: address, zip_code: zip_code, full_name: full_name, age: age}
 
-@app.route('/post-user-information')
+@app.route('/post-user-information', methods=['POST'])
 def post_user_information():
     start_time = int(round(time.time() * 1000))
     username = request.args.get('username')
-    user = User.query.filter_by(username)
+    user = User.query.filter_by(username=username).first()
 
-    if user ==None:
+    if user == None:
         return log('User Not Exist', start_time)
     info = user.user_information.first()
     if info != None:
@@ -162,21 +164,21 @@ def post_user_information():
     db.session.commit()
     return log('Done', start_time)
 
-@app.route('/get-user-information')
+@app.route('/get-user-information', methods=['GET'])
 def get_user_information():
     start_time = int(round(time.time() * 1000))
     username = request.args.get('username')
-    user = User.query.filter_by(username)
+    user = User.query.filter_by(username=username).first()
     if user == None:
         return log('User not Exist', start_time)
     user_info = user.user_information.first()
     return log('Done', start_time)
 
-@app.route('/change-user-information')
+@app.route('/change-user-information', methods=['POST'])
 def change_user_information():
     start_time = int(round(time.time() * 1000))
     username = request.args.get('username')
-    user = User.query.filter_by(username)
+    user = User.query.filter_by(username=username).first()
     if user == None:
         return log('User Not Exist', start_time)
     user_info = user.user_information.first()
