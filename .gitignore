@@ -19,3 +19,5 @@
 venv/
 
 src/server/migrations/
+
+src/server/app/logs/
