@@ -1,3 +1,5 @@
+import random
+
 from flask import render_template, flash, redirect, url_for, request
 from app import app, log_manager
 from .forms import LoginForm
@@ -17,10 +19,17 @@ def log(ans, start_time):
 def display():
     return log_manager.display()
 
+
 @app.route('/inject')
 def inject():
-    total_time = 500
-    logger.info('{} - {} - time: {}'.format(request.remote_addr, request.method, str(total_time)))
+    rand = random.randint(0, 1)
+    if rand == 0:
+        total_time = random.randint(13, 15)
+    elif rand == 1:
+        total_time = random.randint(40, 50)
+    else:
+        total_time = random.randint(60, 80)
+    logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')
 
 @app.route('/')
@@ -105,7 +114,7 @@ def get_post():
     if username == None:
         return log('Not Found', start_time)
 
-    post = user.posts.first()
+    post = username.posts.first()
     return log(post.body, start_time)
 
 

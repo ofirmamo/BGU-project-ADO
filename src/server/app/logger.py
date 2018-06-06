@@ -2,6 +2,7 @@ import logging
 import sys
 from app.logsmanager.LogsManager import LogsManager
 
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
