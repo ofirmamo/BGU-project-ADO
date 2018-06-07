@@ -22,7 +22,7 @@ def display():
 def inject():
     components.inject_user(request)
     components.inject_post(request)
-    components.inject_userinfo(request)
+    components.injcet_userinfo(request)
     total_time = counters.transaction_max
     logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')

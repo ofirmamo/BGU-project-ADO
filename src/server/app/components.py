@@ -152,7 +152,7 @@ def add_userinfo(request):
     log(start_time, user_information_logger, counters.update_userinfo_max)
     return 'OK'
 
-def injet_userinfo(requset):
+def injcet_userinfo(requset):
     total_time = counters.userinfo_table_mac_transaction
     user_information_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
 
