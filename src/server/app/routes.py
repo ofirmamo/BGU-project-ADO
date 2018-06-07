@@ -1,18 +1,16 @@
-import random
-
 from flask import render_template, flash, redirect, url_for, request
 from app import app, log_manager
 from .forms import LoginForm
-from app.models import User,Post,UserInformation
-from app import db
+from app import counters
 from app.logger import logger, log_manager
+from app import components
 import time
 
 
-def log(ans, start_time):
+def log(start_time):
     total_time = int(round(time.time() * 1000)) - start_time
     logger.info('{} - {} - time: {}'.format(request.remote_addr, request.method, str(total_time)))
-    return 'Not Found'
+    counters.update_max(total_time)
 
 
 @app.route('/k-means')
@@ -22,13 +20,10 @@ def display():
 
 @app.route('/inject')
 def inject():
-    rand = random.randint(0, 1)
-    if rand == 0:
-        total_time = random.randint(13, 15)
-    elif rand == 1:
-        total_time = random.randint(40, 50)
-    else:
-        total_time = random.randint(60, 80)
+    components.inject_user(request)
+    components.inject_post(request)
+    components.inject_userinfo(request)
+    total_time = counters.transaction_max
     logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')
 
@@ -51,10 +46,8 @@ def login():
 @app.route('/get-user', methods=['GET'])
 def get_from_table():
     start_time = int(round(time.time() * 1000))
-    u = User.query.filter_by(username=request.args.get('username')).first()
-    total_time = int(round(time.time() * 1000)) - start_time
-    logger.info('{} - {} - time: {}'.format(request.remote_addr, request.method, str(total_time)))
-
+    u = components.get_user(request)
+    log(start_time)
     if u != None:
         return str('username: ' + u.username + ' email: ' + u.email)
     return 'Not Found'
@@ -63,139 +56,60 @@ def get_from_table():
 @app.route('/post-user', methods=['POST'])
 def add_to_table():
     start_time = int(round(time.time() * 1000))
-    u = User(username=request.args.get('username'), email=request.args.get('email'))
-
-    # verify existence
-    pred = User.query.filter_by(username=request.args.get('username')).first()
-    if pred != None:
-        return log('Found', start_time)
-
-    db.session.add(u)
-    db.session.commit()
-    return log('Found', start_time)
-
-
-def delete_user_posts(user):
-    #getting all posts of user
-    posts = Post.query.all()
-    for post in posts:
-        db.session.delete(post)
-    db.session.commit()
-
-def delete_user_information(user):
-    #getting user information
-    infos = UserInformation.query.all()
-    for info in infos:
-        db.session.delete(info)
-    db.session.commit()
-
+    components.add_user(request)
+    log(start_time)
+    return 'Found'
 
 @app.route('/delete-user', methods=['DELETE'])
 def delete_from_table():
     start_time = int(round(time.time() * 1000))
-    user = User.query.filter_by(username=request.args.get('username')).first()
-
-    if user == None:
-        return log('Not Found', start_time)
-
-    delete_user_posts(user)
-    delete_user_information(user)
-
-    db.session.delete(user)
-    db.session.commit()
-    return log('Deleted From Table..', start_time)
+    answer = components.delete_user(request)
+    log(start_time)
+    return answer
 
 @app.route('/get-post', methods=['GET'])
 def get_post():
     start_time = int(round(time.time() * 1000))
-    user = request.args.get('username')
-    username = User.query.filter_by(username=user).first()
-
-    if username == None:
-        return log('Not Found', start_time)
-
-    post = username.posts.first()
-    return log(post.body, start_time)
+    answer = components.get_post(request)
+    log(start_time)
+    if answer == None:
+        return 'User Have no Posts'
+    return answer
 
 
 @app.route('/post-post', methods=['POST'])
 def post_post():
     start_time = int(round(time.time() * 1000))
-    username = request.args.get('username')
-    body = request.args.get('body')
-    user = User.query.filter_by(username=username).first()
-
-    if user == None:
-        return log('Not Found', start_time)
-
-    new_post = Post(body=body, author=user)
-    db.session.add(new_post)
-    db.session.commit()
-    return log('Done', start_time)
+    answer = components.add_post(request)
+    log(start_time)
+    return answer
 
 @app.route('/delete-post', methods=['DELETE'])
 def delete_post():
     start_time = int(round(time.time() * 1000))
-    username = request.args.get('username')
-    user = User.query.filter_by(username=username).first()
-
-    if user == None:
-        return log('User Not Found', start_time)
-
-    post = user.posts.first()
-    if post == None:
-        return log('no Posts', start_time)
-    db.session.delete(post)
-    db.session.commit()
-    return log('Done', start_time)
-
-def parseInfoArgs(request):
-    address = request.args.get('address')
-    zip_code = request.args.get('zip_code')
-    full_name = request.args.get('full_name')
-    age = request.args.get('age')
-    return {address: address, zip_code: zip_code, full_name: full_name, age: age}
+    answer = components.delete_post(request)
+    log(start_time)
+    return answer
 
 @app.route('/post-user-information', methods=['POST'])
 def post_user_information():
     start_time = int(round(time.time() * 1000))
-    username = request.args.get('username')
-    user = User.query.filter_by(username=username).first()
-
-    if user == None:
-        return log('User Not Exist', start_time)
-    info = user.user_information.first()
-    if info != None:
-        return log('User Have Information', start_time)
-    args = parseInfoArgs(request)
-    info = UserInformation(address=args.address, zip_code=args.zip_code, full_name=args.full_name, age=args.age,author=user)
-    db.session.add(info)
-    db.session.commit()
-    return log('Done', start_time)
+    answer = components.add_userinfo(request)
+    log(start_time)
+    return answer
 
 @app.route('/get-user-information', methods=['GET'])
 def get_user_information():
     start_time = int(round(time.time() * 1000))
-    username = request.args.get('username')
-    user = User.query.filter_by(username=username).first()
-    if user == None:
-        return log('User not Exist', start_time)
-    user_info = user.user_information.first()
-    return log('Done', start_time)
+    user_info = components.get_userinfo(request)
+    log(start_time)
+    if user_info == None:
+        return 'User have no information'
+    return user_info
 
 @app.route('/change-user-information', methods=['POST'])
 def change_user_information():
     start_time = int(round(time.time() * 1000))
-    username = request.args.get('username')
-    user = User.query.filter_by(username=username).first()
-    if user == None:
-        return log('User Not Exist', start_time)
-    user_info = user.user_information.first()
-    if user_info != None:
-        db.session.delete(user_info)
-        db.session.commit()
-    args = parseInfoArgs(request)
-    info = UserInformation(address=args.address, zip_code=args.zip_code, full_name=args.full_name, age=args.age, author=user)
-    db.session.add(info)
-    db.session.commit()
-    return log('Done', start_time)
+    answer = components.change_userinfo(request)
+    log(start_time)
+    return answer
