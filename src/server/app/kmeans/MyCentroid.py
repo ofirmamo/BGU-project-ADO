@@ -2,6 +2,7 @@ from scipy.spatial import distance
 from statistics import mean, stdev
 import logging
 
+epsilon: float = 0.001
 
 class Centroid:
 
@@ -21,6 +22,8 @@ class Centroid:
 
             self.mean = mean(total_distance)
             self.stdev = stdev(total_distance, self.mean)
+            if self.stdev == 0:
+                self.stdev = epsilon
             logging.info('mean ={}, stdev = {}', self.mean, self.stdev)
             self.initialized = True
         else:

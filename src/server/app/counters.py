@@ -1,3 +1,5 @@
+import random
+from app.logger import log_manager, log_manager_user, log_manager_posts, log_manager_userinfo
 
 user_table_max_transaction = 0
 post_table_max_transaction = 0
@@ -27,3 +29,23 @@ def update_max(curr_time):
     global transaction_max
     if curr_time > transaction_max:
         transaction_max = curr_time
+
+
+epsilon: float = 2
+noise: int = 1
+dictionary: dict = {'manager': log_manager,
+                    'user': log_manager_user,
+                    'post': log_manager_posts,
+                    'userinfo': log_manager_userinfo
+                    }
+
+
+def get_total_time(component_type: str):
+    manager = dictionary[component_type]
+    stats = manager.stats
+    mean, stdev, threshold = random.choice(stats)
+    dec, inc = mean - (threshold * stdev + epsilon), mean + (threshold * stdev + epsilon)
+    if dec < 0:
+        return round(inc + 1)
+    else:
+        return round(random.choice([dec, inc]) + 1)

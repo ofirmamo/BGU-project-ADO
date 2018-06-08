@@ -1,8 +1,24 @@
+import functools
 import logging
+import threading
+from typing import List
 
 from pyaml import yaml
 
 from app.kmeans.MyKMeans import MyKMeans
+
+from app.kmeans.MyCentroid import Centroid
+
+
+def synchronized(wrapped):
+    lock = threading.Lock()
+
+    @functools.wraps(wrapped)
+    def _wrap(*args, **kwargs):
+        with lock:
+            return wrapped(*args, **kwargs)
+
+    return _wrap
 
 
 class LogsManager(logging.Filter):
@@ -16,9 +32,11 @@ class LogsManager(logging.Filter):
             self.threshold = config['threshold']
 
         self.data_set = []
-        self.initialized = False
+        self.initialized: bool = False
         self.kmeans: MyKMeans = None
+        self.stats: List[(float, float, float)] = None
 
+    @synchronized
     def filter(self, record: str) -> bool:
         try:
             msg = record.msg
@@ -35,6 +53,8 @@ class LogsManager(logging.Filter):
                 self.data_set.append(value)
                 if len(self.data_set) == self.n_logs_to_init:
                     self.kmeans = MyKMeans(threshold=self.threshold, n_cluster=self.n_cluster, data_set=self.data_set)
+                    centroids: List[Centroid] = self.kmeans.centroids
+                    self.stats = [(centroid.mean, centroid.stdev, self.threshold) for centroid in centroids]
                     self.initialized = True
                 record.msg = '{} - k-means not yet initialized'.format(record.msg)
                 return True

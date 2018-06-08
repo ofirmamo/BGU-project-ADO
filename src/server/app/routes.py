@@ -1,5 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app, log_manager
+from app import app
+
+from app.counters import get_total_time
 from .forms import LoginForm
 from app import counters
 from app.logger import logger, log_manager, log_manager_user, log_manager_posts, log_manager_userinfo
@@ -32,7 +34,7 @@ def inject():
     components.inject_user(request)
     components.inject_post(request)
     components.injcet_userinfo(request)
-    total_time = counters.transaction_max
+    total_time = get_total_time('manager')
     logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')
 

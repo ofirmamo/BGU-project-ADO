@@ -3,6 +3,9 @@ import sys
 from app.logsmanager.LogsManager import LogsManager
 
 
+flask_logger = logging.getLogger('werkzeug')
+flask_logger.setLevel(logging.ERROR)
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -57,8 +60,8 @@ userinfo_handler = logging.FileHandler('./app/logs/userinfo_logs.log')
 userinfo_handler.setLevel(logging.INFO)
 
 # create stdout handler
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.INFO)
+# stdout_handler = logging.StreamHandler(sys.stdout)
+# stdout_handler.setLevel(logging.INFO)
 
 # create a logging format
 formatter = logging.Formatter('%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
@@ -66,11 +69,11 @@ handler.setFormatter(formatter)
 user_handler.setFormatter(formatter)
 posts_handler.setFormatter(formatter)
 userinfo_handler.setFormatter(formatter)
-stdout_handler.setFormatter(formatter)
+# stdout_handler.setFormatter(formatter)
 
 # add handler to the logger
 logger.addHandler(handler)
-logger.addHandler(stdout_handler)
+# logger.addHandler(stdout_handler)
 
 user_logger.addHandler(user_handler)
 post_logger.addHandler(posts_handler)
