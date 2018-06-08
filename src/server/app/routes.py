@@ -2,21 +2,30 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, log_manager
 from .forms import LoginForm
 from app import counters
-from app.logger import logger, log_manager
+from app.logger import logger, log_manager, log_manager_user, log_manager_posts, log_manager_userinfo
 from app import components
 import time
-
 
 def log(start_time):
     total_time = int(round(time.time() * 1000)) - start_time
     logger.info('{} - {} - time: {}'.format(request.remote_addr, request.method, str(total_time)))
     counters.update_max(total_time)
 
-
-@app.route('/k-means')
+@app.route('/k-means-server')
 def display():
     return log_manager.display()
 
+@app.route('/k-means-user')
+def display_user():
+    return log_manager_user.display()
+
+@app.route('/k-means-posts')
+def display_post():
+    return log_manager_posts.display()
+
+@app.route('/k-means-userinfo')
+def display_userinfo():
+    return log_manager_userinfo.display()
 
 @app.route('/inject')
 def inject():
@@ -26,6 +35,7 @@ def inject():
     total_time = counters.transaction_max
     logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')
+
 
 @app.route('/')
 @app.route('/index')
@@ -60,12 +70,14 @@ def add_to_table():
     log(start_time)
     return 'Found'
 
+
 @app.route('/delete-user', methods=['DELETE'])
 def delete_from_table():
     start_time = int(round(time.time() * 1000))
     answer = components.delete_user(request)
     log(start_time)
     return answer
+
 
 @app.route('/get-post', methods=['GET'])
 def get_post():
@@ -84,6 +96,7 @@ def post_post():
     log(start_time)
     return answer
 
+
 @app.route('/delete-post', methods=['DELETE'])
 def delete_post():
     start_time = int(round(time.time() * 1000))
@@ -91,12 +104,14 @@ def delete_post():
     log(start_time)
     return answer
 
+
 @app.route('/post-user-information', methods=['POST'])
 def post_user_information():
     start_time = int(round(time.time() * 1000))
     answer = components.add_userinfo(request)
     log(start_time)
     return answer
+
 
 @app.route('/get-user-information', methods=['GET'])
 def get_user_information():
@@ -106,6 +121,7 @@ def get_user_information():
     if user_info == None:
         return 'User have no information'
     return user_info
+
 
 @app.route('/change-user-information', methods=['POST'])
 def change_user_information():
