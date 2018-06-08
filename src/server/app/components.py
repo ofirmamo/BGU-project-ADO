@@ -76,8 +76,8 @@ def delete_user(request):
 
 def inject_user(request):
     total_time = get_total_time('user')
-    print(total_time)
-    user_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time+100)))
+    if total_time != 0:
+        user_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time+100)))
 
 
 # post component
@@ -123,8 +123,8 @@ def delete_post(request):
 
 def inject_post(requset):
     total_time = get_total_time('post')
-    print(total_time)
-    post_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
+    if total_time != 0:
+        post_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
 
 
 # user information component
@@ -176,5 +176,5 @@ def add_userinfo(request):
 
 def injcet_userinfo(requset):
     total_time = get_total_time('userinfo')
-    print(total_time)
-    user_information_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
+    if total_time != 0:
+        user_information_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))

@@ -69,11 +69,9 @@ handler.setFormatter(formatter)
 user_handler.setFormatter(formatter)
 posts_handler.setFormatter(formatter)
 userinfo_handler.setFormatter(formatter)
-# stdout_handler.setFormatter(formatter)
 
 # add handler to the logger
 logger.addHandler(handler)
-# logger.addHandler(stdout_handler)
 
 user_logger.addHandler(user_handler)
 post_logger.addHandler(posts_handler)

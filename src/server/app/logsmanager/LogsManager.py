@@ -6,7 +6,7 @@ from typing import List
 from pyaml import yaml
 
 from app.kmeans.MyKMeans import MyKMeans
-
+from .counters import Counters
 from app.kmeans.MyCentroid import Centroid
 
 
@@ -35,6 +35,7 @@ class LogsManager(logging.Filter):
         self.initialized: bool = False
         self.kmeans: MyKMeans = None
         self.stats: List[(float, float, float)] = None
+        self.Counters = Counters()
 
     @synchronized
     def filter(self, record: str) -> bool:
@@ -43,6 +44,7 @@ class LogsManager(logging.Filter):
             list_of_words = msg.split()
             value = list_of_words[list_of_words.index('time:') + 1]
             value = int(value)
+            self.Counters.total_transaction += 1
 
             if self.initialized:
                 ans = self.kmeans.is_anomaly(value)
@@ -61,6 +63,9 @@ class LogsManager(logging.Filter):
 
         except ValueError as e:
             return False
+
+    def get_total_transaction(self):
+        return self.Counters.total_transaction
 
     def display(self):
         return self.kmeans.display()

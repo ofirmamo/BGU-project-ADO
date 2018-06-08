@@ -1,5 +1,6 @@
 import threading
 import Client
+import requests
 
 
 def main():
@@ -25,6 +26,10 @@ def main():
         th3.join()
 
     th4 = threading.Thread(target=client.error_inject(address, 50))
+    th4.start()
+    th4.join()
+
+    requests.get("{}/stats".format(address))
 
 if __name__ == "__main__":
     main()
