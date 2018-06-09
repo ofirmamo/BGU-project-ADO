@@ -65,12 +65,3 @@ class MyKMeans:
         response.headers['Content-Type'] = 'image/png'
         return response
 
-def main():
-    data_set = list(range(0, 10000))
-    data_set.append(15000)
-    my_kmeans = MyKMeans(threshold=3.5, n_cluster=3, data_set=data_set)
-    my_kmeans.display()
-
-
-if __name__ == '__main__':
-    main()

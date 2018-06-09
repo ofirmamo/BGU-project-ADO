@@ -35,37 +35,74 @@ class LogsManager(logging.Filter):
         self.initialized: bool = False
         self.kmeans: MyKMeans = None
         self.stats: List[(float, float, float)] = None
-        self.Counters = Counters()
+        self.counters: Counters = Counters()
+        self.values_table = []
 
     @synchronized
     def filter(self, record: str) -> bool:
         try:
             msg = record.msg
+
+            injected = 'injected' in msg
+
+            if injected:
+                self.counters.injected_trans += 1
+
+            self.counters.total_transaction += 1
+
             list_of_words = msg.split()
             value = list_of_words[list_of_words.index('time:') + 1]
             value = int(value)
-            self.Counters.total_transaction += 1
-
             if self.initialized:
                 ans = self.kmeans.is_anomaly(value)
                 if ans:
+                    if injected:
+                        self.counters.injected_caught += 1
+                    else:
+                        self.counters.falsely_caught += 1
                     record.msg = '{} - k-means says it anomaly'.format(record.msg)
                 return ans
             else:
                 self.data_set.append(value)
-                if len(self.data_set) == self.n_logs_to_init:
-                    self.kmeans = MyKMeans(threshold=self.threshold, n_cluster=self.n_cluster, data_set=self.data_set)
-                    centroids: List[Centroid] = self.kmeans.centroids
-                    self.stats = [(centroid.mean, centroid.stdev, self.threshold) for centroid in centroids]
-                    self.initialized = True
+                if self.n_logs_to_init <= len(self.data_set):
+                    print('Initializing k-means')
+                    self._init_k_means()
+                    self.data_set.clear()
                 record.msg = '{} - k-means not yet initialized'.format(record.msg)
                 return True
 
         except ValueError as e:
             return False
 
+    @synchronized
+    def reset(self):
+        record = [self.counters.total_transaction,
+                  self.counters.total_transaction - self.n_logs_to_init,
+                  self.n_logs_to_init + self.counters.injected_caught + self.counters.falsely_caught,
+                  self.counters.injected_caught + self.counters.falsely_caught,
+                  self.counters.injected_trans,
+                  self.counters.injected_caught,
+                  self.counters.falsely_caught,
+                  self.counters.total_transaction / float(self.n_logs_to_init + self.counters.injected_caught + self.counters.falsely_caught),
+                  (self.counters.total_transaction - self.n_logs_to_init) / float(self.counters.injected_caught + self.counters.falsely_caught)]
+        self.values_table.append(record)
+        self.initialized = False
+        self.kmeans = None
+        self.counters.clear()
+
+    @synchronized
+    def _init_k_means(self):
+        self.kmeans = MyKMeans(threshold=self.threshold, n_cluster=self.n_cluster, data_set=self.data_set)
+        centroids: List[Centroid] = self.kmeans.centroids
+        self.stats = [(centroid.mean, centroid.stdev, self.threshold) for centroid in centroids]
+        self.initialized = True
+        self.data_set.clear()
+
     def get_total_transaction(self):
-        return self.Counters.total_transaction
+        return self.counters.total_transaction
 
     def display(self):
-        return self.kmeans.display()
+        if not self.initialized:
+            return 'K-means not yet initialized'
+        else:
+            return self.kmeans.display()

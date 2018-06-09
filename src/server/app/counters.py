@@ -8,32 +8,54 @@ userinfo_table_mac_transaction = 0
 
 transaction_max = 0
 
+labels = ['total transactions',
+          'total transactions after initialization',
+          'total saved logs',
+          'total saved logs after initialization',
+          'total injected',
+          'injected caught',
+          'falsely caught',
+          'ratio',
+          'ratio after initialization']
+
 def build_df_server():
-    server_csv = open('./app/resources/server.csv', 'a+')
-    raw_data = {'total_transactions': [log_manager.get_total_transaction()]}
-    df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    df.to_csv(server_csv, header=False)
+    server_csv = open('./app/resources/server.csv', 'w')
+    values = log_manager.values_table
+    df = pd.DataFrame.from_records(values, columns=labels)
+    df.to_csv(server_csv, index=False)
+    # raw_data = {'total_transactions': [log_manager.get_total_transaction()]}
+    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
+    # df.to_csv(server_csv, header=False)
     server_csv.close()
 
 def build_df_user():
-    user_csv = open('./app/resources/user.csv', 'a+')
-    raw_data = {'total_transactions': [log_manager_user.get_total_transaction()]}
-    df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    df.to_csv(user_csv, header=False)
+    user_csv = open('./app/resources/user.csv', 'w')
+    values = log_manager_user.values_table
+    df = pd.DataFrame.from_records(values, columns=labels)
+    df.to_csv(user_csv, index=False)
+    # raw_data = {'total_transactions': [log_manager_user.get_total_transaction()]}
+    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
+    # df.to_csv(user_csv, header=False)
     user_csv.close()
 
 def build_df_posts():
-    posts_csv = open('./app/resources/posts.csv', 'a+')
-    raw_data = {'total_transactions': [log_manager_posts.get_total_transaction()]}
-    df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    df.to_csv(posts_csv, header=False)
+    posts_csv = open('./app/resources/posts.csv', 'w')
+    values = log_manager_posts.values_table
+    df = pd.DataFrame.from_records(values, columns=labels)
+    df.to_csv(posts_csv, index=False)
+    # raw_data = {'total_transactions': [log_manager_posts.get_total_transaction()]}
+    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
+    # df.to_csv(posts_csv, header=False)
     posts_csv.close()
 
 def build_df_userinfo():
-    userinfo_csv = open('./app/resources/userinfo.csv', 'a+')
-    raw_data = {'total_transactions': [log_manager_userinfo.get_total_transaction()]}
-    df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    df.to_csv(userinfo_csv, header=False)
+    userinfo_csv = open('./app/resources/userinfo.csv', 'w')
+    values = log_manager_userinfo.values_table
+    df = pd.DataFrame.from_records(values, columns=labels)
+    df.to_csv(userinfo_csv, index=False)
+    # raw_data = {'total_transactions': [log_manager_userinfo.get_total_transaction()]}
+    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
+    # df.to_csv(userinfo_csv, header=False)
     userinfo_csv.close()
 
 def append_csv():
@@ -85,4 +107,4 @@ def get_total_time(component_type: str):
     if dec < 0:
         return round(inc + 1)
     else:
-        return round(random.choice([dec, inc]) + 1)
+        return round(random.choice([dec - 1, inc + 1]))

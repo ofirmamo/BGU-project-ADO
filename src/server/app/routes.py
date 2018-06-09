@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app
+from app import app, db
 
 from .forms import LoginForm
 from app import counters
-from app.logger import logger, log_manager, log_manager_user, log_manager_posts, log_manager_userinfo
+from app.logger import logger, log_manager, log_manager_user, log_manager_posts, log_manager_userinfo, log_managers
 from app import components
 
 import time
@@ -17,7 +17,18 @@ def log(start_time):
 def stats():
     print('Typing Data...')
     counters.append_csv()
-    return render_template('stats.html')
+    return 'Added to csv file'
+
+@app.route('/reset_test')
+def reset_test():
+    # clear tables
+    meta = db.metadata
+    for table in reversed(meta.sorted_tables):
+        table.delete()
+    # reset managers
+    for key, manager in log_managers.items():
+        manager.reset()
+    return 'Reset completed'
 
 @app.route('/k-means-server')
 def display():
@@ -42,9 +53,15 @@ def inject():
     components.injcet_userinfo(request)
     total_time = counters.get_total_time('manager')
     if total_time != 0:
-        logger.info('{} - {} - time: {} - injcted'.format(request.remote_addr, request.method, str(total_time)))
+        logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
     return render_template('rain.html')
 
+@app.route('/clear', methods=['GET'])
+def clear():
+    meta = db.metadata
+    for table in reversed(meta.sorted_tables):
+        table.delete()
+    return 'Cleared DB'
 
 @app.route('/')
 @app.route('/index')

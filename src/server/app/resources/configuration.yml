@@ -1,8 +1,8 @@
 
 #Kmeans configurations
 
-n_logs_to_init: 100
+n_logs_to_init: 50
 
 n_clusters: 3
 
-threshold: 1
+threshold: 0.5

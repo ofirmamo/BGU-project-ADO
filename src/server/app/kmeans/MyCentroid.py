@@ -4,6 +4,7 @@ import logging
 
 epsilon: float = 0.001
 
+
 class Centroid:
 
     def __init__(self, centroid, data_set=None):

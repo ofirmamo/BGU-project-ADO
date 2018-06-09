@@ -52,7 +52,7 @@ def add_user(request):
     start_time = int(round(time.time() * 1000))
     u = User(username=request.args.get('username'), email=request.args.get('email'))
     pred = User.query.filter_by(username=request.args.get('username')).first()
-    if pred != None:
+    if pred is not None:
         log(start_time, user_logger, counters.update_user_max)
         return
     db.session.add(u)
@@ -63,7 +63,7 @@ def add_user(request):
 def delete_user(request):
     start_time = int(round(time.time() * 1000))
     user = get_user(request)
-    if user == None:
+    if user is None:
         log(start_time, user_logger)
         return 'Uset Not Exist'
     delete_user_posts(user)
@@ -77,18 +77,18 @@ def delete_user(request):
 def inject_user(request):
     total_time = get_total_time('user')
     if total_time != 0:
-        user_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time+100)))
+        user_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time + 100)))
 
 
 # post component
 def get_post(request):
     start_time = int(round(time.time() * 1000))
     username = get_user(request)
-    if username == None:
+    if username is None:
         return 'User Not Found'
     post = username.posts.first()
     log(start_time, post_logger, counters.update_post_max)
-    if post == None:
+    if post is None:
         return None
     return post.body
 
@@ -97,7 +97,7 @@ def add_post(request):
     start_time = int(round(time.time() * 1000))
     body = request.args.get('body')
     user = get_user(request)
-    if user == None:
+    if user is None:
         return 'User Not Found'
     new_post = Post(body=body, author=user)
     db.session.add(new_post)
@@ -109,10 +109,10 @@ def add_post(request):
 def delete_post(request):
     start_time = int(round(time.time() * 1000))
     user = get_user(request)
-    if user == None:
+    if user is None:
         return 'User Not Found'
     post = get_post(request)
-    if post == None:
+    if post is None:
         return 'User Have No Posts'
 
     db.session.delete(post)
@@ -132,7 +132,7 @@ def inject_post(requset):
 def get_userinfo(request):
     start_time = int(round(time.time() * 1000))
     user = get_user(request)
-    if user == None:
+    if user is None:
         return 'User Not Exist'
     user_info = user.user_information.first()
     log(start_time, user_information_logger, counters.update_userinfo_max)
@@ -142,10 +142,10 @@ def get_userinfo(request):
 def change_userinfo(requset):
     start_time = int(round(time.time() * 1000))
     user = get_user(request)
-    if user == None:
+    if user is None:
         return 'User Not Exist'
     user_info = get_userinfo(request)
-    if user_info != None:
+    if user_info is not None:
         db.session.delete(user_info)
         db.session.commit()
     args = parseInfoArgs(request)
@@ -160,10 +160,10 @@ def change_userinfo(requset):
 def add_userinfo(request):
     start_time = int(round(time.time() * 1000))
     user = get_userinfo(request)
-    if user == None:
+    if user is None:
         return 'User Not Exist'
     info = get_userinfo(request)
-    if info != None:
+    if info is not None:
         return 'User Have User Information'
     args = parseInfoArgs(request)
     info = UserInformation(address=args.address, zip_code=args.zip_code, full_name=args.full_name, age=args.age,
@@ -177,4 +177,5 @@ def add_userinfo(request):
 def injcet_userinfo(requset):
     total_time = get_total_time('userinfo')
     if total_time != 0:
-        user_information_logger.info('{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
+        user_information_logger.info(
+            '{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
