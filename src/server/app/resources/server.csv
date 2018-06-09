@@ -1,4 +1,0 @@
-total transactions,total transactions after initialization,total saved logs,total saved logs after initialization,total injected,injected caught,falsely caught,ratio,ratio after initialization
-2449,2399,1729,1679,50,50,1629,1.4164256795835743,1.4288266825491365
-2437,2387,2106,2056,39,39,2017,1.157169990503324,1.1609922178988328
-2433,2383,1765,1715,50,50,1665,1.3784702549575072,1.3895043731778425
