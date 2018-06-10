@@ -9,6 +9,8 @@ userinfo_table_mac_transaction = 0
 transaction_max = 0
 
 labels = ['total transactions',
+          'num_logs_to_init',
+          'threshold',
           'total transactions after initialization',
           'total saved logs',
           'total saved logs after initialization',

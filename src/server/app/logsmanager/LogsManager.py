@@ -27,9 +27,9 @@ class LogsManager(logging.Filter):
         super().__init__()
         with open(configuration, 'r') as config_file:
             config = yaml.load(config_file)
-            self.n_logs_to_init = config['n_logs_to_init']
-            self.n_cluster = config['n_clusters']
-            self.threshold = config['threshold']
+            self.n_logs_to_init: int = config['n_logs_to_init']
+            self.n_cluster: int = config['n_clusters']
+            self.threshold: float = config['threshold']
 
         self.data_set = []
         self.initialized: bool = False
@@ -77,6 +77,8 @@ class LogsManager(logging.Filter):
     @synchronized
     def reset(self):
         record = [self.counters.total_transaction,
+                  self.n_logs_to_init,
+                  self.threshold,
                   self.counters.total_transaction - self.n_logs_to_init,
                   self.n_logs_to_init + self.counters.injected_caught + self.counters.falsely_caught,
                   self.counters.injected_caught + self.counters.falsely_caught,
@@ -84,7 +86,7 @@ class LogsManager(logging.Filter):
                   self.counters.injected_caught,
                   self.counters.falsely_caught,
                   self.counters.total_transaction / float(self.n_logs_to_init + self.counters.injected_caught + self.counters.falsely_caught),
-                  (self.counters.total_transaction - self.n_logs_to_init) / float(self.counters.injected_caught + self.counters.falsely_caught)]
+                  (self.counters.total_transaction - self.n_logs_to_init) / float(self.counters.injected_caught + self.counters.falsely_caught + 1)]
         self.values_table.append(record)
         self.initialized = False
         self.kmeans = None
@@ -97,6 +99,12 @@ class LogsManager(logging.Filter):
         self.stats = [(centroid.mean, centroid.stdev, self.threshold) for centroid in centroids]
         self.initialized = True
         self.data_set.clear()
+
+    @synchronized
+    def set_configurations(self, threshold: float, n_logs_to_init: int):
+        self.threshold = threshold
+        self.n_logs_to_init = n_logs_to_init
+        # print(self.n_logs_to_init, self.threshold, type(self.n_logs_to_init), type(self.threshold))
 
     def get_total_transaction(self):
         return self.counters.total_transaction

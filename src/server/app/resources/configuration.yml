@@ -1,7 +1,7 @@
 
 #Kmeans configurations
 
-n_logs_to_init: 50
+n_logs_to_init: 200
 
 n_clusters: 3
 

@@ -30,6 +30,11 @@ def reset_test():
         manager.reset()
     return 'Reset completed'
 
+@app.route('/set_configuration',  methods=['GET'])
+def set_configuration():
+    components.set_configurations(request)
+    return 'Set new configurations'
+
 @app.route('/k-means-server')
 def display():
     return log_manager.display()

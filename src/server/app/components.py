@@ -1,7 +1,7 @@
 from flask import request
 from app.models import User, Post, UserInformation
 from app import db
-from app.logger import user_logger, post_logger, user_information_logger, log_manager
+from app.logger import user_logger, post_logger, user_information_logger, log_manager, log_managers
 from app import counters
 import time
 
@@ -179,3 +179,11 @@ def injcet_userinfo(requset):
     if total_time != 0:
         user_information_logger.info(
             '{} - {} - time: {} - injected'.format(request.remote_addr, request.method, str(total_time)))
+
+
+def set_configurations(request):
+    threshold, n_logs_to_init = float(request.args.get('threshold')), int(request.args.get('n_logs_to_init'))
+    # print('Threshold', threshold, 'n_logs', n_logs_to_init)
+    for key, manager in log_managers.items():
+        # print('manager logs', manager.n_logs_to_init)
+        manager.set_configurations(threshold, n_logs_to_init)
