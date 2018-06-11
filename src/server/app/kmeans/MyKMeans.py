@@ -26,9 +26,8 @@ class MyKMeans:
         self.anomalies = []
 
         for i, center in enumerate(self.centers):
-            centroid = Centroid(center)
             data_set = (k_means_data[j] for j in range(len(k_means_data)) if self.labels[j] == i)
-            centroid.initialize(data_set)
+            centroid = Centroid(center, data_set=data_set)
             self.centroids.append(centroid)
 
     def z_score(self, dot: int):

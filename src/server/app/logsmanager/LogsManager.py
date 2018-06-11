@@ -10,15 +10,19 @@ from .counters import Counters
 from app.kmeans.MyCentroid import Centroid
 
 
-def synchronized(wrapped):
-    lock = threading.Lock()
+def synchronized(method):
+    outer_lock = threading.Lock()
+    lock_name = "__" + method.__name__ + "_lock" + "__"
 
-    @functools.wraps(wrapped)
-    def _wrap(*args, **kwargs):
-        with lock:
-            return wrapped(*args, **kwargs)
+    @functools.wraps(method)
+    def sync_method(self, *args, **kws):
+        with outer_lock:
+            if not hasattr(self, lock_name): setattr(self, lock_name, threading.Lock())
+            lock = getattr(self, lock_name)
+            with lock:
+                return method(self, *args, **kws)
 
-    return _wrap
+    return sync_method
 
 
 class LogsManager(logging.Filter):
@@ -92,7 +96,6 @@ class LogsManager(logging.Filter):
         self.kmeans = None
         self.counters.clear()
 
-    @synchronized
     def _init_k_means(self):
         self.kmeans = MyKMeans(threshold=self.threshold, n_cluster=self.n_cluster, data_set=self.data_set)
         centroids: List[Centroid] = self.kmeans.centroids

@@ -1,9 +1,9 @@
 thresholds: [0.5, 1, 2]
 
-n_logs_to_init: [250, 500, 750]
+n_logs_to_init: [250, 500]
 
-num_messages: [150, 200, 300]
+num_messages: [200]
 
-num_injects: [25, 50]
+num_injects: [50]
 
-num_tests: 10
+num_tests: 1

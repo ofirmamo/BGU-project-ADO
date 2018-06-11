@@ -20,45 +20,35 @@ labels = ['total transactions',
           'ratio',
           'ratio after initialization']
 
-def build_df_server():
-    server_csv = open('./app/resources/server.csv', 'w')
-    values = log_manager.values_table
+def write_to_csv(file, values):
     df = pd.DataFrame.from_records(values, columns=labels)
-    df.to_csv(server_csv, index=False)
-    # raw_data = {'total_transactions': [log_manager.get_total_transaction()]}
-    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    # df.to_csv(server_csv, header=False)
-    server_csv.close()
+    print(df)
+    sorted_df = df.sort_values(['num_logs_to_init', 'threshold', 'total injected'])
+    sorted_df.to_csv(file, index=False)
+    file.close()
+
+def build_df_server():
+    server_csv = open('./app/data/server.csv', 'w')
+    values = log_manager.values_table
+    write_to_csv(server_csv, values)
+
 
 def build_df_user():
-    user_csv = open('./app/resources/user.csv', 'w')
+    user_csv = open('./app/data/user.csv', 'w')
     values = log_manager_user.values_table
-    df = pd.DataFrame.from_records(values, columns=labels)
-    df.to_csv(user_csv, index=False)
-    # raw_data = {'total_transactions': [log_manager_user.get_total_transaction()]}
-    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    # df.to_csv(user_csv, header=False)
-    user_csv.close()
+    write_to_csv(user_csv, values)
 
 def build_df_posts():
-    posts_csv = open('./app/resources/posts.csv', 'w')
+    posts_csv = open('./app/data/posts.csv', 'w')
     values = log_manager_posts.values_table
-    df = pd.DataFrame.from_records(values, columns=labels)
-    df.to_csv(posts_csv, index=False)
-    # raw_data = {'total_transactions': [log_manager_posts.get_total_transaction()]}
-    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    # df.to_csv(posts_csv, header=False)
-    posts_csv.close()
+    write_to_csv(posts_csv, values)
+
 
 def build_df_userinfo():
-    userinfo_csv = open('./app/resources/userinfo.csv', 'w')
+    userinfo_csv = open('./app/data/userinfo.csv', 'w')
     values = log_manager_userinfo.values_table
-    df = pd.DataFrame.from_records(values, columns=labels)
-    df.to_csv(userinfo_csv, index=False)
-    # raw_data = {'total_transactions': [log_manager_userinfo.get_total_transaction()]}
-    # df = pd.DataFrame(raw_data, columns=['total_transactions'])
-    # df.to_csv(userinfo_csv, header=False)
-    userinfo_csv.close()
+    write_to_csv(userinfo_csv, values)
+
 
 def append_csv():
     build_df_server()

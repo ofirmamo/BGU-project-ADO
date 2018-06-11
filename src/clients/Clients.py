@@ -11,8 +11,8 @@ def main():
 
     client = Client.Client()
 
-    with open('./src/clients/Tests/tests.yml', 'r') as config_file:
-    # with open('./Tests/tests.yml', 'r') as config_file:
+    # with open('./src/clients/Tests/tests.yml', 'r') as config_file:
+    with open('./Tests/tests.yml', 'r') as config_file:
         config = yaml.load(config_file)
         thresholds = config['thresholds']
         n_logs_to_init = config['n_logs_to_init']
