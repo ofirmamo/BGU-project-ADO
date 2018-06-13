@@ -16,8 +16,8 @@ class MyKMeans:
 
     def __init__(self, threshold: float, n_cluster: int, data_set: list):
         self.threshold = threshold
-        self.data_set = data_set
-        k_means_data = np.array(list(zip(data_set)))
+        self.data_set = list(data_set)
+        k_means_data = np.array(list(zip(self.data_set)))
         self.kmeans = KMeans(n_cluster)
         self.kmeans.fit(k_means_data)
         self.labels = self.kmeans.predict(k_means_data)
